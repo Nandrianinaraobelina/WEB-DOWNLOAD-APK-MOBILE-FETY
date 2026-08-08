@@ -165,94 +165,9 @@
       .fromTo(
         '.phone-tilt',
         { rotateY: 45, scale: 0.7, opacity: 0, filter: 'blur(6px)' },
-        { rotateY: 0, scale: 1, opacity: 1, filter: 'blur(0px)', duration: 1.2, ease: 'power4.out' },
+        { rotateY: 0, scale: 1, opacity: 1, filter: 'blur(0px)', duration: 1.2, ease: 'power4.out', clearProps: 'transform,filter,opacity' },
         '-=0.9'
       );
-
-    // Une fois l'entrée terminée : le téléphone suit le scroll jusqu'au footer
-    tl.eventCallback('onComplete', function () { initPhoneFollow(); });
-  }
-
-  /* ============================================================
-     TÉLÉPHONE : suivi du scroll jusqu'au footer
-     Le téléphone passe en position:fixed à son emplacement du hero,
-     puis descend (scrub) jusqu'à la zone du footer quand on scroll,
-     et remonte quand on remonte la page. Il reste DEVANT les cartes.
-     ============================================================ */
-  let phoneFollowInit = false;
-
-  function initPhoneFollow() {
-    if (phoneFollowInit || !gsapReady) return;
-    const wrap = document.querySelector('.phone-wrap');
-    const hero = document.querySelector('.hero');
-    const footer = document.querySelector('footer');
-    if (!wrap || !hero || !footer) return;
-
-    // Position du téléphone DANS le hero (avant de passer en fixed)
-    const heroRect = hero.getBoundingClientRect();
-    const wrapRect = wrap.getBoundingClientRect();
-    const relLeft = wrapRect.left - heroRect.left;
-    const relTop = wrapRect.top - heroRect.top;
-    const width = wrapRect.width;
-
-    // Distance à parcourir pour terminer la descente près du footer
-    function computeTravel() {
-      const maxScroll = Math.max(1, doc.scrollHeight - window.innerHeight);
-      const footRect = footer.getBoundingClientRect();
-      const target = footRect.top + window.scrollY - width * 1.2;
-      const current = wrapRect.top + window.scrollY;
-      return Math.max(0, target - current);
-    }
-
-    let travel = computeTravel();
-    let followTween = null;
-
-    function createFollowTween() {
-      if (followTween) { followTween.scrollTrigger.kill(); followTween.kill(); }
-      followTween = gsap.to(wrap, {
-        y: travel,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: document.body,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 0.6
-        }
-      });
-    }
-
-    // Passe en fixed à l'emplacement exact du hero (aucun saut visuel)
-    wrap.classList.add('phone-follow');
-    gsap.set(wrap, {
-      top: wrapRect.top,
-      left: wrapRect.left,
-      width: width,
-      position: 'fixed'
-    });
-
-    // Descente liée au scroll (scrub) : on remonte quand on remonte la page
-    createFollowTween();
-
-    // Au redimensionnement, on recalcule la course (la position fixed ne
-    // change que si on est encore en haut de page, sinon pas de saut visuel)
-    function rebuild() {
-      if (window.scrollY < 4) {
-        gsap.set(wrap, {
-          top: hero.getBoundingClientRect().top + relTop,
-          left: hero.getBoundingClientRect().left + relLeft
-        });
-      }
-      travel = computeTravel();
-      createFollowTween();
-      window.ScrollTrigger.refresh();
-    }
-    let resizeTimer = null;
-    window.addEventListener('resize', function () {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(rebuild, 180);
-    });
-
-    phoneFollowInit = true;
   }
 
   /* ================= NAVBAR ================= */
@@ -274,24 +189,8 @@
       }
     });
 
-    // Scroll reveal des sections (variantes gérées via les valeurs CSS initiales)
-    gsap.utils.toArray('.reveal, .reveal-left, .reveal-right, .reveal-zoom, .reveal-blur')
-      .forEach(function (el) {
-        ScrollTrigger.create({
-          trigger: el,
-          start: 'top 85%',
-          once: true,
-          onEnter: function () {
-            gsap.to(el, {
-              opacity: 1,
-              x: 0, y: 0, scale: 1,
-              filter: 'blur(0px)',
-              duration: 0.9,
-              ease: 'power3.out'
-            });
-          }
-        });
-      });
+    // Scroll reveal : SUPPRIMÉ (rendait la page invisible si l'événement
+    // de scroll ne se déclenchait pas). Le contenu est toujours visible.
 
     // Parallax du hero (scrub)
     gsap.to('.blob-a', {
@@ -302,9 +201,9 @@
       yPercent: 90, ease: 'none',
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 }
     });
-    // Parallax de la colonne texte (le téléphone, lui, reste fixed et suit le scroll)
+    // Parallax de la colonne texte du hero (déplacement seul, sans estompage)
     gsap.to('.hero-copy', {
-      y: 140, opacity: 0, ease: 'none',
+      y: 120, ease: 'none',
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom 40%', scrub: 0.5 }
     });
 
@@ -330,8 +229,7 @@
       if (blobA) blobA.style.transform = 'translateY(' + (y * -0.12) + 'px)';
       if (blobB) blobB.style.transform = 'translateY(' + (y * -0.18) + 'px)';
       if (heroCopy) {
-        heroCopy.style.transform = 'translateY(' + (y * 0.18) + 'px)';
-        heroCopy.style.opacity = Math.max(0, 1 - y / 620);
+        heroCopy.style.transform = 'translateY(' + (y * 0.14) + 'px)';
       }
       parallaxTicking = false;
     }
@@ -344,23 +242,7 @@
     }, { passive: true });
     updateScrollFx();
 
-    // Reveal vanilla
-    const revealObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-zoom, .reveal-blur')
-      .forEach(function (el) { revealObserver.observe(el); });
-
-    document.querySelectorAll('.feature-card.reveal-zoom, .step.reveal-left, .step.reveal-zoom, .step.reveal-right')
-      .forEach(function (el, i) {
-        el.style.transitionDelay = (i % 3) * 0.12 + 's';
-      });
+    // Reveal vanilla : SUPPRIMÉ (même raison — contenu toujours visible)
   }
 
   /* ================= MICRO-INTERACTIONS : BOUTONS MAGNÉTIQUES + TILT 3D ================= */
@@ -454,99 +336,6 @@
   document.querySelectorAll('.btn').forEach(function (btn) {
     btn.addEventListener('click', function (e) { createRipple(e, btn); });
   });
-
-  /* ================= FOND 3D HERO (Three.js : particules) ================= */
-  function initHeroParticles() {
-    const canvas = document.getElementById('hero-canvas');
-    if (!canvas || !window.THREE || prefersReduced) return;
-
-    try {
-      const hero = document.querySelector('.hero');
-      const width = hero.clientWidth;
-      const height = hero.clientHeight;
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 100);
-      camera.position.z = 5;
-
-      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      renderer.setSize(width, height);
-
-      // Nuage de particules
-      const count = Math.max(40, Math.min(130, Math.floor(width / 10)));
-      const positions = new Float32Array(count * 3);
-      for (let i = 0; i < count; i++) {
-        positions[i * 3]     = (Math.random() - 0.5) * 9;
-        positions[i * 3 + 1] = (Math.random() - 0.5) * 6;
-        positions[i * 3 + 2] = (Math.random() - 0.5) * 5;
-      }
-      const geometry = new THREE.BufferGeometry();
-      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-      const material = new THREE.PointsMaterial({
-        color: 0x9A7FD0,
-        size: 0.06,
-        transparent: true,
-        opacity: 0.7,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      });
-      const points = new THREE.Points(geometry, material);
-      scene.add(points);
-
-      // Parallax avec la souris
-      let mouseX = 0, mouseY = 0;
-      const onMouseMove = function (e) {
-        mouseX = e.clientX / window.innerWidth - 0.5;
-        mouseY = e.clientY / window.innerHeight - 0.5;
-      };
-      window.addEventListener('mousemove', onMouseMove, { passive: true });
-
-      let rafId = 0;
-      let running = true;
-
-      function tick() {
-        if (!running) return;
-        points.rotation.y += 0.0006;
-        points.rotation.x += 0.0002;
-        camera.position.x += (mouseX * 0.7 - camera.position.x) * 0.04;
-        camera.position.y += (-mouseY * 0.5 - camera.position.y) * 0.04;
-        camera.lookAt(0, 0, 0);
-        renderer.render(scene, camera);
-        rafId = requestAnimationFrame(tick);
-      }
-
-      // Ne rendre que lorsque le hero est visible
-      const visibilityObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            running = true;
-            rafId = requestAnimationFrame(tick);
-          } else {
-            running = false;
-            cancelAnimationFrame(rafId);
-          }
-        });
-      });
-      visibilityObserver.observe(canvas);
-
-      // Redimensionnement
-      const onResize = function () {
-        const nw = hero.clientWidth;
-        const nh = hero.clientHeight;
-        camera.aspect = nw / nh;
-        camera.updateProjectionMatrix();
-        renderer.setSize(nw, nh);
-      };
-      window.addEventListener('resize', onResize);
-
-      tick();
-    } catch (err) {
-      // WebGL indisponible : le fond reste transparent, la page fonctionne normalement
-    }
-  }
-  initHeroParticles();
 
   /* ================= TOAST TÉLÉCHARGEMENT ================= */
   const toast = document.getElementById('toast');
