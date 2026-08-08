@@ -24,7 +24,7 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
   background: var(--background);
   color: var(--text-primary);
   line-height: 1.6;
@@ -127,7 +127,7 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 .boxes .box > div {
-  --background: #5C8DF6;
+  --background: #FFE200;
   --top: auto;
   --right: auto;
   --bottom: auto;
@@ -152,18 +152,18 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 .boxes .box > div:nth-child(2) {
-  --background: #145af2;
+  --background: #E0B400;
   --right: 0;
   --rotateY: 90deg;
 }
 
 .boxes .box > div:nth-child(3) {
-  --background: #447cf5;
+  --background: #F7D900;
   --rotateX: -90deg;
 }
 
 .boxes .box > div:nth-child(4) {
-  --background: #A7B9EC;
+  --background: #FFF6C9;
   --top: 0;
   --left: 0;
   --translateZ: calc(var(--size) * 3 * -1);
@@ -388,7 +388,7 @@ nav .btn-primary, nav .btn-primary:hover { color: #120F00; }
   align-items: center;
   position: relative;
   padding: 120px 5% 80px;
-  background: #120F00;
+  background: #FFFFFF;
   overflow: hidden;
 }
 /* Blobs liquides / morphing + parallax */
@@ -404,14 +404,14 @@ nav .btn-primary, nav .btn-primary:hover { color: #120F00; }
   width: 480px; height: 480px;
   top: -150px; right: -130px;
   background: #FFE200;
-  opacity: 0.35;
+  opacity: 0.30;
   animation: blob-morph 16s ease-in-out infinite;
 }
 .blob-b {
   width: 360px; height: 360px;
   bottom: -120px; left: -100px;
-  background: #FFFFFF;
-  opacity: 0.22;
+  background: #EFEDE6;
+  opacity: 0.7;
   animation: blob-morph 20s ease-in-out infinite reverse;
 }
 @keyframes blob-morph {
@@ -451,7 +451,7 @@ nav .btn-primary, nav .btn-primary:hover { color: #120F00; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #FFFFFF;
+  color: #120F00;
   font-weight: 700;
   font-size: 0.9rem;
   margin-bottom: 22px;
@@ -471,11 +471,11 @@ nav .btn-primary, nav .btn-primary:hover { color: #120F00; }
   font-size: clamp(2.2rem, 4.5vw, 3.4rem);
   font-weight: 800;
   line-height: 1.15;
-  color: #FFFFFF;
+  color: #120F00;
   margin-bottom: 18px;
 }
 .hero h1 .gradient-text {
-  color: #FFE200;
+  color: #C9A800;
 }
 
 /* Split text : mots qui entrent un par un (blur → net) */
@@ -492,7 +492,7 @@ nav .btn-primary, nav .btn-primary:hover { color: #120F00; }
 .split-word.space { width: 0.3em; }
 
 .hero p.subtitle {
-  color: #D8D2BA;
+  color: #5C5640;
   font-size: 1.12rem;
   max-width: 520px;
   margin-bottom: 32px;
@@ -501,8 +501,8 @@ nav .btn-primary, nav .btn-primary:hover { color: #120F00; }
 .cta-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-bottom: 30px; }
 
 .hero-stats { display: flex; gap: 36px; flex-wrap: wrap; }
-.stat .stat-value { font-family: 'Poppins'; font-weight: 700; font-size: 1.35rem; color: #FFE200; }
-.stat .stat-label { font-size: 0.85rem; color: #A69F82; }
+.stat .stat-value { font-family: 'Poppins'; font-weight: 700; font-size: 1.35rem; color: #C9A800; }
+.stat .stat-label { font-size: 0.85rem; color: #8A8470; }
 
 /* Entrée séquencée après le preloader */
 html.js .badge, html.js .subtitle, html.js .cta-row, html.js .hero-stats { opacity: 0; }
@@ -962,7 +962,7 @@ html.js.no-anim .hero .phone-wrap {
 section { padding: 90px 5%; }
 .section-head { text-align: center; max-width: 640px; margin: 0 auto 56px; }
 .section-head .kicker {
-  color: var(--primary);
+  color: #C9A800;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -1003,23 +1003,26 @@ html.js .reveal-blur.visible {
   perspective: 1200px;
 }
 
-/* --- Carte polaroid (design fourni, adapté au thème jaune/noir) --- */
+/* --- Carte polaroid ORIGINALE (code fourni : fond #a68b8a, carré crème #faf3e8) --- */
+.pcard-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
 .pcard {
   position: relative;
-  background: #120F00;
-  width: 215px;
-  height: 318px;
-  margin: 0 auto;
+  background: #a68b8a;
+  width: 190px;
+  height: 265px;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
   overflow: visible;
-  box-shadow: 0px 1px 5px rgba(0, 0, 0, .3), 0 16px 40px rgba(18, 15, 0, 0.2);
-  border-radius: 4px;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, .3);
   will-change: transform;
 }
 .pcard:hover {
-  transform: scale(1.03);
-  box-shadow: 0px 1px 5px rgba(0, 0, 0, .3), 0 22px 50px rgba(255, 226, 0, 0.25);
+  transform: scale(1.02);
 }
 .pcard:active {
   transform: scale(1.02) translate(0, 5%);
@@ -1027,12 +1030,9 @@ html.js .reveal-blur.visible {
 
 .pcard-shine {
   position: relative;
-  top: 0;
-  left: 0;
-  width: 215px;
-  height: 318px;
+  width: 190px;
+  height: 265px;
   overflow: hidden;
-  border-radius: 4px;
 }
 .pcard-shine-effect {
   position: absolute;
@@ -1040,8 +1040,8 @@ html.js .reveal-blur.visible {
   left: 150%;
   width: 25px;
   height: 400px;
-  background-color: rgba(255, 255, 255, 0.16);
-  box-shadow: 0 0 15px 2px rgba(255, 255, 255, 0.25);
+  background-color: #ffffff2a;
+  box-shadow: 0 0 15px 2px #ffffff42;
   transform: rotate(25deg);
   transition: all 1s cubic-bezier(0.78, 0.02, 0.5, 0.77);
   z-index: 5;
@@ -1056,7 +1056,7 @@ html.js .reveal-blur.visible {
   top: 0;
   left: 0;
   width: 125px;
-  height: 72px;
+  height: 73px;
   background: url('../assets/fc-pattern-1.svg') no-repeat;
   background-size: cover;
   z-index: 2;
@@ -1076,7 +1076,7 @@ html.js .reveal-blur.visible {
 
 .pcard-tape-1 {
   position: absolute;
-  top: -18%;
+  top: -20%;
   left: 2%;
   width: 35px;
   height: 74px;
@@ -1088,7 +1088,7 @@ html.js .reveal-blur.visible {
 }
 .pcard-tape-2 {
   position: absolute;
-  top: -22%;
+  top: -25%;
   right: 2%;
   width: 35px;
   height: 92px;
@@ -1108,63 +1108,55 @@ html.js .reveal-blur.visible {
   transform: scaleY(1.1);
 }
 
+/* Carré crème central (comme « Photos » dans l'original) */
 .pcard-product {
-  content: "";
   position: absolute;
-  top: 12%;
+  top: 10%;
   left: 50%;
   transform: translate(-50%, 0);
-  width: 160px;
-  height: 160px;
-  background-color: #FFE200;
+  width: 150px;
+  height: 150px;
+  background-color: #faf3e8;
   z-index: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
-  box-shadow: inset 0 0 0 1px rgba(18, 15, 0, 0.08);
+  gap: 6px;
+  padding: 8px;
 }
 .pcard-product .icon {
-  width: 56px;
-  height: 56px;
-  color: #120F00;
+  width: 34px;
+  height: 34px;
+  color: #181818;
 }
 .pcard-product .icon svg {
-  stroke-width: 1.6;
+  stroke-width: 1.8;
 }
-
-.pcard h3 {
-  position: absolute;
-  bottom: 66px;
-  left: 0;
-  right: 0;
+.pcard-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #181818;
   text-align: center;
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: #FFFFFF;
-  z-index: 4;
-  padding: 0 12px;
+  line-height: 1.25;
   font-family: 'Poppins', sans-serif;
 }
-.pcard p {
-  position: absolute;
-  bottom: 12px;
-  left: 0;
-  right: 0;
+
+/* Légende sous la carte (comme une vraie photo) */
+.pcard-desc {
+  max-width: 215px;
   text-align: center;
-  color: #C9C2A6;
-  font-size: 0.72rem;
-  line-height: 1.35;
-  z-index: 4;
-  padding: 0 14px;
+  color: #4A4238;
+  font-size: 0.78rem;
+  line-height: 1.5;
 }
 
 .pcard-tree {
   position: absolute;
-  bottom: 1%;
+  bottom: 2%;
   right: -2%;
-  width: 60px;
-  height: 88px;
+  width: 70px;
+  height: 102px;
   background: url('../assets/fc-tree.svg') no-repeat;
   background-size: contain;
   transform-origin: 100% 0;
@@ -1234,12 +1226,9 @@ html.js .reveal-blur.visible {
   font-size: 0.875rem;
 }
 .card__paragraph code {
-  color: #120F00;
+  color: #C9A800;
   font-size: 0.82rem;
   font-weight: 700;
-  background: #FFF6C9;
-  padding: 2px 6px;
-  border-radius: 6px;
 }
 .card__ribbon {
   margin-top: 1.5rem;
