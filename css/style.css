@@ -95,69 +95,132 @@ html.lenis, html.lenis body { height: auto; }
   animation: preloader-exit 0.9s cubic-bezier(0.76, 0, 0.24, 1) forwards;
   animation-delay: 1.7s;
 }
-.loader {
-  position: relative;
-  width: 180px;
-  height: 180px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform-style: preserve-3d;
-  transform: perspective(500px) rotateX(45deg);
-}
-
-.loader span {
+/* Loader « goo » : 3 pastilles qui fusionnent puis tournent (effet goo via filtre SVG) */
+.container {
+  width: 200px;
+  height: 200px;
   position: absolute;
-  display: block;
-  border: 15px solid #fff;
-  box-sizing: border-box;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: auto;
+  filter: url("#goo");
+  animation: rotate-move 2s ease-in-out infinite;
+}
+
+.dot {
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  box-shadow: 0 10px 0 #e0e0e0, inset 0 10px 0 #e0e0e0;
-  animation: animate_5013 4.5s ease-in-out infinite;
+  background-color: #000;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
-.loader span:nth-child(1) {
-  animation-delay: 0s;
+.dot-3 {
+  background-color: #ff1717;
+  animation: dot-3-move 2s ease infinite, index 6s ease infinite;
 }
 
-.loader span:nth-child(2) {
-  animation-delay: 1.5s;
+.dot-2 {
+  background-color: #0051ff;
+  animation: dot-2-move 2s ease infinite, index 6s -4s ease infinite;
 }
 
-.loader span:nth-child(3) {
-  animation-delay: 3s;
+.dot-1 {
+  background-color: #ffc400;
+  animation: dot-1-move 2s ease infinite, index 6s -2s ease infinite;
 }
 
-@keyframes animate_5013 {
-  0% {
-    transform: translateZ(-100px);
-    width: 100%;
-    height: 100%;
+@keyframes dot-3-move {
+  20% {
+    transform: scale(1);
   }
-
-  25% {
-    transform: translateZ(100px);
-    width: 100%;
-    height: 100%;
+  45% {
+    transform: translateY(-18px) scale(0.45);
   }
-
-  50% {
-    transform: translateZ(100px);
-    width: 35%;
-    height: 35%;
+  60% {
+    transform: translateY(-90px) scale(0.45);
   }
-
-  75% {
-    transform: translateZ(-100px);
-    width: 35%;
-    height: 35%;
+  80% {
+    transform: translateY(-90px) scale(0.45);
   }
-
   100% {
-    transform: translateZ(-100px);
-    width: 100%;
-    height: 100%;
+    transform: translateY(0px) scale(1);
   }
+}
+
+@keyframes dot-2-move {
+  20% {
+    transform: scale(1);
+  }
+  45% {
+    transform: translate(-16px, 12px) scale(0.45);
+  }
+  60% {
+    transform: translate(-80px, 60px) scale(0.45);
+  }
+  80% {
+    transform: translate(-80px, 60px) scale(0.45);
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+}
+
+@keyframes dot-1-move {
+  20% {
+    transform: scale(1);
+  }
+  45% {
+    transform: translate(16px, 12px) scale(0.45);
+  }
+  60% {
+    transform: translate(80px, 60px) scale(0.45);
+  }
+  80% {
+    transform: translate(80px, 60px) scale(0.45);
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+}
+
+@keyframes rotate-move {
+  55% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  80% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes index {
+  0%, 100% {
+    z-index: 3;
+  }
+  33.3% {
+    z-index: 2;
+  }
+  66.6% {
+    z-index: 1;
+  }
+}
+
+/* Le SVG du filtre goo ne doit ni s'afficher ni gêner la mise en page */
+#preloader svg {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 @keyframes preloader-exit {
   0%   { transform: translateY(0); visibility: visible; }
