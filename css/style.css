@@ -771,13 +771,7 @@ html.js .reveal-blur.visible { opacity: 1; transform: none; filter: none; }
   transform: translateY(-6px);
   box-shadow: 0 24px 48px rgba(57, 62, 127, 0.18);
 }
-/* Chaque carte d'installation a sa propre couleur */
-.card:nth-child(1) { background-color: #EAF2FF; }
-.card:nth-child(2) { background-color: #FFF3DC; }
-.card:nth-child(3) { background-color: #E6F6EC; }
-.card:nth-child(1) .card__icon { background-color: #3B82F6; }
-.card:nth-child(2) .card__icon { background-color: #F59E0B; }
-.card:nth-child(3) .card__icon { background-color: #22C55E; }
+/* Toutes les cartes d'installation partagent le même fond neutre */
 .card::before {
   content: "";
   position: absolute;
@@ -800,10 +794,7 @@ html.js .reveal-blur.visible { opacity: 1; transform: none; filter: none; }
   width: 52px;
   height: 52px;
   margin: 0 auto;
-  background-color: #393e7f;
-  color: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 18px rgba(57, 62, 127, 0.35);
+  color: #393e7f;
 }
 .card__title {
   font-weight: 800;
