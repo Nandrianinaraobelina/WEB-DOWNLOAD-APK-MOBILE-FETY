@@ -4,6 +4,8 @@
    ============================================================ */
 
 :root {
+  /* Le site reste TOUJOURS en mode clair, jamais en sombre */
+  color-scheme: light;
   --primary: #a68b8a;
   --primary-dark: #8C7A63;
   --primary-light: #f3dfde;
@@ -20,6 +22,18 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ---- Filet de sécurité : même si le système passe en sombre,
+        la page garde ses couleurs claires (aucun mode sombre) ---- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light;
+  }
+  body {
+    background: #FFFFFF;
+    color: #3B2F24;
+  }
+}
 
 html { scroll-behavior: smooth; }
 
