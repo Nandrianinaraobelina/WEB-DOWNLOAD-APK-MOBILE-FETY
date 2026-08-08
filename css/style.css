@@ -1065,7 +1065,9 @@ html.js .reveal-blur.visible {
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   scroll-behavior: smooth;
-  padding: 10px 4px 26px;
+  /* Padding haut généreux : les rubans adhésifs qui dépassent des cartes
+     ne doivent plus être coupés par le défilement du carrousel */
+  padding: 70px 4px 26px;
 }
 .features-track::-webkit-scrollbar { display: none; }
 
@@ -1142,8 +1144,8 @@ html.js .reveal-blur.visible {
 .pcard {
   position: relative;
   background: #a68b8a;
-  width: 200px;
-  height: 310px;
+  width: 220px;
+  height: 340px;
   cursor: pointer;
   transition: transform 0.3s ease;
   overflow: visible;
@@ -1159,8 +1161,8 @@ html.js .reveal-blur.visible {
 
 .pcard-shine {
   position: relative;
-  width: 200px;
-  height: 310px;
+  width: 220px;
+  height: 340px;
   overflow: hidden;
 }
 .pcard-shine-effect {
@@ -1184,8 +1186,8 @@ html.js .reveal-blur.visible {
   position: absolute;
   top: 0;
   left: 0;
-  width: 125px;
-  height: 73px;
+  width: 138px;
+  height: 81px;
   background: url('../assets/fc-pattern-1.svg') no-repeat;
   background-size: cover;
   z-index: 2;
@@ -1195,8 +1197,8 @@ html.js .reveal-blur.visible {
   position: absolute;
   top: -10%;
   left: -10%;
-  width: 200px;
-  height: 106px;
+  width: 218px;
+  height: 116px;
   background: url('../assets/fc-pattern-2.svg') no-repeat;
   background-size: cover;
   z-index: 2;
@@ -1205,10 +1207,10 @@ html.js .reveal-blur.visible {
 
 .pcard-tape-1 {
   position: absolute;
-  top: -20%;
+  top: -12%;
   left: 2%;
-  width: 35px;
-  height: 74px;
+  width: 40px;
+  height: 84px;
   background: url('../assets/fc-tape-1.svg') no-repeat;
   background-size: contain;
   filter: drop-shadow(1px 3px 3px rgba(0, 0, 0, 0.45));
@@ -1217,10 +1219,10 @@ html.js .reveal-blur.visible {
 }
 .pcard-tape-2 {
   position: absolute;
-  top: -25%;
+  top: -16%;
   right: 2%;
-  width: 35px;
-  height: 92px;
+  width: 40px;
+  height: 104px;
   background: url('../assets/fc-tape-2.svg') no-repeat;
   background-size: contain;
   filter: drop-shadow(1px 3px 3px rgba(0, 0, 0, 0.45));
@@ -1243,8 +1245,8 @@ html.js .reveal-blur.visible {
   top: 9%;
   left: 50%;
   transform: translate(-50%, 0);
-  width: 150px;
-  height: 150px;
+  width: 160px;
+  height: 160px;
   background-color: #8C7A63;
   z-index: 1;
   display: flex;
@@ -1255,15 +1257,15 @@ html.js .reveal-blur.visible {
   padding: 8px;
 }
 .pcard-product .icon {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   color: #FFFFFF;
 }
 .pcard-product .icon svg {
   stroke-width: 1.8;
 }
 .pcard-title {
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #FFFFFF;
   text-align: center;
@@ -1274,12 +1276,12 @@ html.js .reveal-blur.visible {
 /* Description À L'INTÉRIEUR de la carte (sous le carré brun) */
 .pcard-desc {
   position: absolute;
-  top: 192px;
-  left: 10px;
-  right: 10px;
+  top: 202px;
+  left: 12px;
+  right: 12px;
   text-align: center;
   color: #FFFFFF;
-  font-size: 0.7rem;
+  font-size: 0.74rem;
   line-height: 1.45;
   z-index: 4;
   text-shadow: 0 1px 3px rgba(62, 49, 40, 0.45);
@@ -1289,8 +1291,8 @@ html.js .reveal-blur.visible {
   position: absolute;
   bottom: 2%;
   right: -2%;
-  width: 70px;
-  height: 102px;
+  width: 78px;
+  height: 114px;
   background: url('../assets/fc-tree.svg') no-repeat;
   background-size: contain;
   transform-origin: 100% 0;
