@@ -145,8 +145,7 @@
     const words = gsap.utils.toArray('.hero h1 .split-word');
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-    tl.fromTo('.hero .badge', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7 })
-      .fromTo(
+    tl.fromTo(
         words,
         { opacity: 0, y: 36, filter: 'blur(10px)' },
         { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.65, stagger: 0.05 },
