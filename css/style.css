@@ -1290,8 +1290,8 @@ html.js .reveal-blur.visible {
 /* La fleur / plante est soufflée par le VENT (balancement continu) */
 .pcard-tree {
   position: absolute;
-  bottom: 2%;
-  right: -2%;
+  bottom: 4%;
+  right: 4%;
   width: 78px;
   height: 114px;
   background: url('../assets/fc-tree.svg') no-repeat;
