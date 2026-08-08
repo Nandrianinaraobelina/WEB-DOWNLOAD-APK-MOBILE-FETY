@@ -2,6 +2,17 @@
 
 Simple page web statique permettant à tout le monde de télécharger l'application mobile **FetyApp** (APK Android).
 
+
+
+<p align="center">
+  <img src="assets/hero.png" alt="Mon site web" width="800" />
+  <br/>
+</p>
+
+
+
+
+
 ## Contenu
 
 - `index.html` — structure de la page (HTML uniquement)
@@ -14,9 +25,14 @@ Simple page web statique permettant à tout le monde de télécharger l'applicat
 
 Le bouton de téléchargement pointe vers l'APK hébergé sur la release GitHub :
 
-```
-https://github.com/Nandrianinaraobelina/fetyapp-release/releases/download/v2.1.2/fetyApp.apk
-```
+
+<p align="center">
+  <img src="assets/sectionDeux.png" alt="Fenetre principale de l'application" width="800" />
+  <br/>
+</p>
+
+
+
 
 > **Important :** pour mettre à jour le lien après une nouvelle release, remplacez
 > `v2.1.2` et `fetyApp.apk` par le tag et le nom du fichier de la nouvelle release
@@ -33,24 +49,17 @@ python -m http.server 8080
 
 ## Déployer gratuitement
 
-Ce dossier est **son propre dépôt git** (indépendant du projet principal).
+https://fetyapp-mada.onrender.com/
 
-### GitHub Pages
 
-1. Créez un dépôt GitHub vide (ex. `fetyapp-download`).
-2. Depuis ce dossier, liez et poussez (le dépôt est déjà initialisé sur `main`) :
-   ```bash
-   cd fetyapp-download
-   git remote add origin https://github.com/VOTRE_COMPTE/fetyapp-download.git
-   git push -u origin main
-   ```
-3. Sur GitHub : **Settings → Pages → Branch : `main` → `/ (root)` → Save**.
-4. Votre page est en ligne sur `https://VOTRE_COMPTE.github.io/fetyapp-download/`.
+<p align="center">
+  <img src="assets/sectioinUn.png" alt="Fenetre principale de l'application" width="800" />
+  <br/>
+</p>
 
-### Netlify / Vercel
 
-- **Netlify :** glissez-déposez le dossier `fetyapp-download` sur https://app.netlify.com/drop.
-- **Vercel :** importez le projet (aucune configuration nécessaire, site statique).
+
+
 
 ## Remarques
 
