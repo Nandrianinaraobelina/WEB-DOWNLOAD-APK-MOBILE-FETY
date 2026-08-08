@@ -33,15 +33,14 @@ python -m http.server 8080
 
 ## Déployer gratuitement
 
+Ce dossier est **son propre dépôt git** (indépendant du projet principal).
+
 ### GitHub Pages
 
-1. Créez un dépôt GitHub (ex. `fetyapp-download`).
-2. Poussez le contenu de ce dossier :
+1. Créez un dépôt GitHub vide (ex. `fetyapp-download`).
+2. Depuis ce dossier, liez et poussez (le dépôt est déjà initialisé sur `main`) :
    ```bash
-   git init
-   git add .
-   git commit -m "Page de téléchargement FetyApp"
-   git branch -M main
+   cd fetyapp-download
    git remote add origin https://github.com/VOTRE_COMPTE/fetyapp-download.git
    git push -u origin main
    ```
@@ -55,6 +54,14 @@ python -m http.server 8080
 
 ## Remarques
 
+- Ce dossier possède son propre dépôt git (`main`). Pour committer une modification :
+  ```bash
+  cd fetyapp-download
+  git add .
+  git commit -m "description de la modification"
+  git push
+  ```
+- Le dépôt principal du projet ignore ce dossier (`.gitignore` du projet : `fetyapp-download/`).
 - L'APK (~81 MB) est hébergé sur GitHub Releases, il n'est donc **pas** copié dans
   ce dossier pour éviter de dupliquer le fichier. La page fonctionne partout tant
   que le lien de la release est public.
