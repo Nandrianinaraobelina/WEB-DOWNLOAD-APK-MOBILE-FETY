@@ -160,7 +160,99 @@
         { clipPath: 'inset(0 0 100% 0)' },
         { clipPath: 'inset(0 0 0% 0)', duration: 1.1, ease: 'power4.inOut' },
         '-=0.4'
+      )
+      // Entrée 3D spectaculaire du téléphone (rotation + zoom + flou)
+      .fromTo(
+        '.phone-tilt',
+        { rotateY: 45, scale: 0.7, opacity: 0, filter: 'blur(6px)' },
+        { rotateY: 0, scale: 1, opacity: 1, filter: 'blur(0px)', duration: 1.2, ease: 'power4.out' },
+        '-=0.9'
       );
+
+    // Une fois l'entrée terminée : le téléphone suit le scroll jusqu'au footer
+    tl.eventCallback('onComplete', function () { initPhoneFollow(); });
+  }
+
+  /* ============================================================
+     TÉLÉPHONE : suivi du scroll jusqu'au footer
+     Le téléphone passe en position:fixed à son emplacement du hero,
+     puis descend (scrub) jusqu'à la zone du footer quand on scroll,
+     et remonte quand on remonte la page. Il reste DEVANT les cartes.
+     ============================================================ */
+  let phoneFollowInit = false;
+
+  function initPhoneFollow() {
+    if (phoneFollowInit || !gsapReady) return;
+    const wrap = document.querySelector('.phone-wrap');
+    const hero = document.querySelector('.hero');
+    const footer = document.querySelector('footer');
+    if (!wrap || !hero || !footer) return;
+
+    // Position du téléphone DANS le hero (avant de passer en fixed)
+    const heroRect = hero.getBoundingClientRect();
+    const wrapRect = wrap.getBoundingClientRect();
+    const relLeft = wrapRect.left - heroRect.left;
+    const relTop = wrapRect.top - heroRect.top;
+    const width = wrapRect.width;
+
+    // Distance à parcourir pour terminer la descente près du footer
+    function computeTravel() {
+      const maxScroll = Math.max(1, doc.scrollHeight - window.innerHeight);
+      const footRect = footer.getBoundingClientRect();
+      const target = footRect.top + window.scrollY - width * 1.2;
+      const current = wrapRect.top + window.scrollY;
+      return Math.max(0, target - current);
+    }
+
+    let travel = computeTravel();
+    let followTween = null;
+
+    function createFollowTween() {
+      if (followTween) { followTween.scrollTrigger.kill(); followTween.kill(); }
+      followTween = gsap.to(wrap, {
+        y: travel,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: document.body,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.6
+        }
+      });
+    }
+
+    // Passe en fixed à l'emplacement exact du hero (aucun saut visuel)
+    wrap.classList.add('phone-follow');
+    gsap.set(wrap, {
+      top: wrapRect.top,
+      left: wrapRect.left,
+      width: width,
+      position: 'fixed'
+    });
+
+    // Descente liée au scroll (scrub) : on remonte quand on remonte la page
+    createFollowTween();
+
+    // Au redimensionnement, on recalcule la course (la position fixed ne
+    // change que si on est encore en haut de page, sinon pas de saut visuel)
+    function rebuild() {
+      if (window.scrollY < 4) {
+        gsap.set(wrap, {
+          top: hero.getBoundingClientRect().top + relTop,
+          left: hero.getBoundingClientRect().left + relLeft
+        });
+      }
+      travel = computeTravel();
+      createFollowTween();
+      window.ScrollTrigger.refresh();
+    }
+    let resizeTimer = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(rebuild, 180);
+    });
+
+    phoneFollowInit = true;
   }
 
   /* ================= NAVBAR ================= */
@@ -210,13 +302,10 @@
       yPercent: 90, ease: 'none',
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 }
     });
-    gsap.to('#hero-inner', {
+    // Parallax de la colonne texte (le téléphone, lui, reste fixed et suit le scroll)
+    gsap.to('.hero-copy', {
       y: 140, opacity: 0, ease: 'none',
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom 40%', scrub: 0.5 }
-    });
-    gsap.to('.phone-wrap', {
-      y: 90, ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 }
     });
 
     // Recalcule après chargement complet (polices, images)
@@ -236,17 +325,13 @@
 
       const blobA = document.querySelector('.blob-a');
       const blobB = document.querySelector('.blob-b');
-      const heroInner = document.getElementById('hero-inner');
-      const phoneWrap = document.querySelector('.phone-wrap');
+      const heroCopy = document.querySelector('.hero-copy');
 
       if (blobA) blobA.style.transform = 'translateY(' + (y * -0.12) + 'px)';
       if (blobB) blobB.style.transform = 'translateY(' + (y * -0.18) + 'px)';
-      if (heroInner) {
-        heroInner.style.transform = 'translateY(' + (y * 0.18) + 'px)';
-        heroInner.style.opacity = Math.max(0, 1 - y / 620);
-      }
-      if (phoneWrap && y < window.innerHeight * 1.4) {
-        phoneWrap.style.transform = 'translateY(' + (y * 0.1) + 'px)';
+      if (heroCopy) {
+        heroCopy.style.transform = 'translateY(' + (y * 0.18) + 'px)';
+        heroCopy.style.opacity = Math.max(0, 1 - y / 620);
       }
       parallaxTicking = false;
     }
@@ -302,7 +387,7 @@
     });
 
     // Motion (spring) : tilt 3D + lueur suiveuse des cartes
-    document.querySelectorAll('.feature-card, .step, .card').forEach(function (card) {
+    document.querySelectorAll('.feature-card, .step, .steps .card').forEach(function (card) {
       card.addEventListener('mousemove', function (e) {
         const r = card.getBoundingClientRect();
         const px = (e.clientX - r.left) / r.width - 0.5;
@@ -338,7 +423,7 @@
     });
 
     // Repli vanilla : tilt 3D
-    document.querySelectorAll('.feature-card, .step, .card').forEach(function (card) {
+    document.querySelectorAll('.feature-card, .step, .steps .card').forEach(function (card) {
       card.addEventListener('mousemove', function (e) {
         const r = card.getBoundingClientRect();
         const px = (e.clientX - r.left) / r.width - 0.5;
