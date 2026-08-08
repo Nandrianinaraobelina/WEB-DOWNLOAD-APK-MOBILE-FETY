@@ -6,7 +6,7 @@
   <title>FetyApp — Télécharger l'application mobile</title>
   <meta name="description" content="Téléchargez FetyApp, l'application mobile qui vous aide à créer, découvrir et gérer vos événements et fêtes avec RSVP, carte interactive et messagerie en temps réel.">
   <meta name="theme-color" content="#FFFFFF">
-  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="icon" type="image/png" href="assets/logo.png">
 
   <!-- Open Graph (partage sur réseaux sociaux) -->
   <meta property="og:title" content="FetyApp — Télécharger l'application">
@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=6">
+  <link rel="stylesheet" href="css/style.css?v=7">
 </head>
 <body>
 
@@ -68,6 +68,15 @@
       <a href="#fonctionnalites">Fonctionnalités</a>
       <a href="#installation">Installation</a>
       <a href="#telecharger" class="btn btn-primary magnetic" style="padding: 10px 20px; font-size: 0.9rem;">Télécharger</a>
+    </div>
+    <!-- Menu mobile : burger + dropdown -->
+    <button class="nav-burger" id="nav-burger" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-dropdown" id="nav-dropdown">
+      <a href="#fonctionnalites">Fonctionnalités</a>
+      <a href="#installation">Installation</a>
+      <a href="#telecharger" class="btn btn-primary">Télécharger</a>
     </div>
   </nav>
 
@@ -211,7 +220,11 @@
       <h2>Tout pour vos fêtes, en temps réel</h2>
       <p>Une seule application pour organiser, partager et vivre vos événements partout à Madagascar.</p>
     </div>
-    <div class="features-grid">
+    <div class="features-carousel" id="features-carousel">
+      <button class="carousel-arrow carousel-prev" aria-label="Cartes précédentes">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="features-track" data-lenis-prevent>
       <div class="pcard-cell">
         <div class="pcard">
           <div class="pcard-shine">
@@ -319,6 +332,11 @@
           <div class="pcard-tree"></div>
         </div>
       </div>
+      </div>
+      <button class="carousel-arrow carousel-next" aria-label="Cartes suivantes">
+        <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+      <div class="carousel-dots" id="carousel-dots"></div>
     </div>
   </section>
 
@@ -419,6 +437,6 @@
   <script src="https://cdn.jsdelivr.net/npm/motion@11/dist/motion.js"></script>
 
   <!-- Script principal des animations -->
-  <script src="js/main.js?v=6"></script>
+  <script src="js/main.js?v=7"></script>
 </body>
 </html>

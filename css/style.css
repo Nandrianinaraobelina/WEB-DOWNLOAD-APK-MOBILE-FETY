@@ -332,6 +332,63 @@ nav.scrolled {
 /* Le bouton Télécharger de la navbar est beige avec texte blanc */
 nav .btn-primary, nav .btn-primary:hover { color: #FFFFFF; }
 
+/* ================= Menu mobile (burger + dropdown) ================= */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 110;
+}
+.nav-burger span {
+  display: block;
+  width: 24px;
+  height: 2.5px;
+  border-radius: 3px;
+  background: #3B2F24;
+  margin: 0 auto;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.nav-burger.active span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.nav-burger.active span:nth-child(2) { opacity: 0; }
+.nav-burger.active span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+.nav-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 5%;
+  background: #FFFFFF;
+  border-bottom: 1px solid rgba(140, 122, 99, 0.2);
+  box-shadow: 0 18px 30px rgba(62, 49, 40, 0.12);
+  z-index: 90;
+}
+.nav-dropdown.open { display: flex; }
+.nav-dropdown a {
+  color: #4A3B2C;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 12px 16px;
+  border-radius: 12px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.nav-dropdown a:hover { background: #f3dfde; color: #8C7A63; }
+.nav-dropdown .btn { justify-content: center; margin-top: 6px; }
+
+@media (max-width: 900px) {
+  .nav-burger { display: flex; }
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -649,7 +706,7 @@ html.js.no-anim .hero .phone-wrap {
 .screen-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top right, #0f172a, #1e1b4b, #0f172a);
+  background: #1e1b4b;
   transition: transform 0.7s ease;
 }
 .phone:hover .screen-bg { transform: scale(1.1); }
@@ -797,7 +854,7 @@ html.js.no-anim .hero .phone-wrap {
 .app-calendar .cal-d { font-size: 6px; font-weight: 700; text-transform: uppercase; line-height: 1; margin-top: 3px; }
 .app-calendar .cal-n { font-size: 16px; font-weight: 300; line-height: 1; color: #000; }
 .app-gradient {
-  background: linear-gradient(to top right, #fde047, #ec4899, #a855f7);
+  background: #a855f7;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
@@ -898,7 +955,7 @@ html.js.no-anim .hero .phone-wrap {
   width: 38px;
   height: 38px;
   border-radius: 11px;
-  background: linear-gradient(to bottom right, #ef4444, #db2777);
+  background: #db2777;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -993,23 +1050,94 @@ html.js .reveal-blur.visible {
   filter: none;
 }
 
-/* ================= Features (cartes polaroid) ================= */
+/* ================= Features (cartes polaroid en CARROUSEL) ================= */
 .features { background: #FFFFFF; }
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 40px 28px;
+.features-carousel {
+  position: relative;
   max-width: 1150px;
   margin: 0 auto;
-  perspective: 1200px;
+}
+.features-track {
+  --carousel-visible: 3;
+  display: flex;
+  gap: 28px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  padding: 10px 4px 26px;
+}
+.features-track::-webkit-scrollbar { display: none; }
+
+/* Flèches du carrousel */
+.carousel-arrow {
+  position: absolute;
+  top: 42%;
+  transform: translateY(-50%);
+  z-index: 20;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2px solid rgba(140, 122, 99, 0.35);
+  background: #FFFFFF;
+  color: #8C7A63;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(62, 49, 40, 0.14);
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.carousel-arrow:hover {
+  background: #8C7A63;
+  color: #FFFFFF;
+  transform: translateY(-50%) scale(1.06);
+  box-shadow: 0 12px 26px rgba(62, 49, 40, 0.22);
+}
+.carousel-arrow svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.carousel-prev { left: -12px; }
+.carousel-next { right: -12px; }
+
+/* Points de pagination */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.carousel-dots button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(140, 122, 99, 0.35);
+  cursor: pointer;
+  padding: 0;
+  transition: width 0.25s ease, background 0.25s ease;
+}
+.carousel-dots button.active {
+  width: 26px;
+  border-radius: 999px;
+  background: #8C7A63;
 }
 
-/* --- Carte polaroid ORIGINALE (code fourni : fond #a68b8a, carré crème #faf3e8) --- */
+/* --- Carte polaroid : fond beige #a68b8a, carré brun #8C7A63, TEXTE BLANC --- */
 .pcard-cell {
+  flex: 0 0 calc((100% - (var(--carousel-visible) - 1) * 28px) / var(--carousel-visible));
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 14px;
+  scroll-snap-align: center;
 }
 .pcard {
   position: relative;
@@ -1117,7 +1245,7 @@ html.js .reveal-blur.visible {
   transform: translate(-50%, 0);
   width: 150px;
   height: 150px;
-  background-color: #faf3e8;
+  background-color: #8C7A63;
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -1129,7 +1257,7 @@ html.js .reveal-blur.visible {
 .pcard-product .icon {
   width: 34px;
   height: 34px;
-  color: #8C7A63;
+  color: #FFFFFF;
 }
 .pcard-product .icon svg {
   stroke-width: 1.8;
@@ -1137,23 +1265,24 @@ html.js .reveal-blur.visible {
 .pcard-title {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #3B2F24;
+  color: #FFFFFF;
   text-align: center;
   line-height: 1.25;
   font-family: 'Poppins', sans-serif;
 }
 
-/* Description À L'INTÉRIEUR de la carte (sous le carré crème) */
+/* Description À L'INTÉRIEUR de la carte (sous le carré brun) */
 .pcard-desc {
   position: absolute;
   top: 192px;
   left: 10px;
   right: 10px;
   text-align: center;
-  color: #3B2F24;
+  color: #FFFFFF;
   font-size: 0.7rem;
   line-height: 1.45;
   z-index: 4;
+  text-shadow: 0 1px 3px rgba(62, 49, 40, 0.45);
 }
 
 .pcard-tree {
@@ -1421,6 +1550,25 @@ footer .copyright a:hover { color: #fff; border-color: #fff; }
   .phone-wrap { order: -1; }
   .phone { width: 180px; height: 356px; }
   .hero { padding-top: 110px; }
+  /* Carrousel : 2 cartes par vue */
+  .features-track { --carousel-visible: 2; }
+  /* Apps du téléphone proportionnelles (180 px) */
+  .phone .app { width: 30px; height: 30px; border-radius: 10px; }
+  .phone .app svg { width: 16px; height: 16px; }
+  .phone .app-grid { gap: 8px; }
+  .phone .app-calendar .cal-n { font-size: 12px; }
+  .phone .app-calendar .cal-d { font-size: 5px; }
+  .phone .grad-dot { width: 12px; height: 12px; }
+  .phone .dock { height: 52px; border-radius: 18px; padding: 0 6px; margin-bottom: 8px; }
+  .phone .dock-app { width: 34px; height: 34px; border-radius: 10px; }
+  .phone .dock-app svg { width: 16px; height: 16px; }
+  .phone .home-screen { padding: 40px 10px 14px; }
+  .phone .lock-btn { width: 30px; height: 30px; }
+  .phone .lock-btn svg { width: 15px; height: 15px; }
+  .phone .lock-actions { padding: 0 18px; bottom: 20px; }
+  .phone:hover .notch { width: 150px; height: 48px; }
+  .phone .music-icon { width: 30px; height: 30px; }
+  .phone .music-icon svg { width: 15px; height: 15px; }
 }
 
 /* Très petits écrans (téléphones) */
@@ -1430,11 +1578,39 @@ footer .copyright a:hover { color: #fff; border-color: #fff; }
   .hero h1 { font-size: clamp(1.7rem, 7vw, 2.3rem); }
   .phone { width: 150px; height: 300px; }
   .phone .lock-time { font-size: 56px; }
-  .features-grid { grid-template-columns: 1fr; gap: 32px 0; }
   .steps { grid-template-columns: 1fr; gap: 38px 0; }
   .final-cta { padding: 44px 20px; }
   .card__ribbon { width: 106%; left: -3%; }
   .hero-stats { gap: 22px; }
+  /* Carrousel : 1 carte par vue */
+  .features-track { --carousel-visible: 1; gap: 0; }
+  .carousel-arrow { top: 40%; }
+  /* Apps du téléphone proportionnelles (150 px) */
+  .phone .app { width: 24px; height: 24px; border-radius: 8px; }
+  .phone .app svg { width: 13px; height: 13px; }
+  .phone .app-grid { gap: 6px; margin-top: 6px; }
+  .phone .app-calendar .cal-n { font-size: 10px; }
+  .phone .app-calendar .cal-d { font-size: 4px; }
+  .phone .grad-dot { width: 10px; height: 10px; }
+  .phone .dock { height: 44px; border-radius: 14px; padding: 0 4px; margin-bottom: 6px; }
+  .phone .dock-app { width: 28px; height: 28px; border-radius: 8px; }
+  .phone .dock-app svg { width: 13px; height: 13px; }
+  .phone .home-screen { padding: 36px 8px 12px; }
+  .phone .lock-btn { width: 26px; height: 26px; }
+  .phone .lock-btn svg { width: 13px; height: 13px; }
+  .phone .lock-actions { padding: 0 14px; bottom: 18px; }
+  .phone .status-bar { font-size: 8px; padding: 4px 12px; }
+  .phone .status-icons svg { width: 9px; height: 9px; }
+  .phone .status-icons svg:last-child { width: 12px; height: 12px; }
+  .phone .lock-day { font-size: 7px; }
+  .phone .notch { width: 58px; height: 20px; top: 10px; }
+  .phone:hover .notch { width: 116px; height: 42px; }
+  .phone .music-icon { width: 24px; height: 24px; border-radius: 8px; }
+  .phone .music-icon svg { width: 12px; height: 12px; }
+  .phone .music-title { font-size: 8px; }
+  .phone .music-artist { font-size: 7px; }
+  .phone .eq-bars { height: 10px; }
+  .phone .notch-content { gap: 6px; }
 }
 
 /* Très petits écrans en hauteur (paysage) */
@@ -1445,4 +1621,26 @@ footer .copyright a:hover { color: #fff; border-color: #fff; }
   .phone .lock-time { font-size: 44px; }
   .btn { padding: 12px 20px; font-size: 0.92rem; }
   .hero-stats { gap: 16px; }
+  /* Apps du téléphone proportionnelles (128 px) */
+  .phone .app { width: 20px; height: 20px; border-radius: 7px; }
+  .phone .app svg { width: 11px; height: 11px; }
+  .phone .app-grid { gap: 4px; }
+  .phone .dock { height: 38px; border-radius: 12px; padding: 0 3px; margin-bottom: 4px; }
+  .phone .dock-app { width: 24px; height: 24px; border-radius: 7px; }
+  .phone .dock-app svg { width: 12px; height: 12px; }
+  .phone .home-screen { padding: 32px 6px 10px; }
+  .phone .lock-btn { width: 22px; height: 22px; }
+  .phone .lock-btn svg { width: 11px; height: 11px; }
+  .phone .lock-actions { padding: 0 10px; bottom: 16px; }
+  .phone:hover .notch { width: 96px; height: 36px; }
+  .phone .music-icon { width: 20px; height: 20px; border-radius: 6px; }
+  .phone .music-icon svg { width: 10px; height: 10px; }
+  .phone .music-title { font-size: 7px; }
+  .phone .music-artist { font-size: 6px; }
+  .phone .eq-bars { display: none; }
+  /* Carrousel : flèches compactes */
+  .carousel-arrow { width: 38px; height: 38px; }
+  .carousel-arrow svg { width: 18px; height: 18px; }
+  .carousel-prev { left: -2px; }
+  .carousel-next { right: -2px; }
 }
