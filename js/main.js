@@ -175,6 +175,34 @@
     navbar.classList.toggle('scrolled', window.scrollY > 20);
   }, { passive: true });
 
+  // Petit halo interactif : il donne de la profondeur à la capsule sans déplacer le contenu.
+  if (navbar && finePointer) {
+    navbar.addEventListener('pointermove', function (event) {
+      const bounds = navbar.getBoundingClientRect();
+      navbar.style.setProperty('--nav-x', ((event.clientX - bounds.left) / bounds.width * 100) + '%');
+      navbar.style.setProperty('--nav-y', ((event.clientY - bounds.top) / bounds.height * 100) + '%');
+    });
+  }
+
+  // Repère la section visible dans la navigation pour garder un feedback élégant.
+  if (navbar && 'IntersectionObserver' in window) {
+    const navAnchors = Array.from(navbar.querySelectorAll('.nav-links a[href^="#"]:not(.btn)'));
+    const sections = navAnchors
+      .map(function (link) { return document.querySelector(link.getAttribute('href')); })
+      .filter(Boolean);
+
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        navAnchors.forEach(function (link) {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      });
+    }, { rootMargin: '-28% 0px -58% 0px', threshold: 0 });
+
+    sections.forEach(function (section) { observer.observe(section); });
+  }
+
   /* ================= SCROLL PROGRESS + REVEALS + PARALLAX ================= */
   const progress = document.getElementById('scroll-progress');
 
@@ -191,15 +219,6 @@
     // Scroll reveal : SUPPRIMÉ (rendait la page invisible si l'événement
     // de scroll ne se déclenchait pas). Le contenu est toujours visible.
 
-    // Parallax du hero (scrub)
-    gsap.to('.blob-a', {
-      yPercent: 60, ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 }
-    });
-    gsap.to('.blob-b', {
-      yPercent: 90, ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 }
-    });
     // Parallax de la colonne texte du hero (déplacement seul, sans estompage)
     gsap.to('.hero-copy', {
       y: 120, ease: 'none',
@@ -221,12 +240,8 @@
       }
       if (prefersReduced) return;
 
-      const blobA = document.querySelector('.blob-a');
-      const blobB = document.querySelector('.blob-b');
       const heroCopy = document.querySelector('.hero-copy');
 
-      if (blobA) blobA.style.transform = 'translateY(' + (y * -0.12) + 'px)';
-      if (blobB) blobB.style.transform = 'translateY(' + (y * -0.18) + 'px)';
       if (heroCopy) {
         heroCopy.style.transform = 'translateY(' + (y * 0.14) + 'px)';
       }
